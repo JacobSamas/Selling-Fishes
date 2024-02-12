@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Fishes - Aquarium Fish Store</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <h1>Monster Fishes</h1>
+    <ul class="monster-fish-list">
+        <li class="monster-fish-item">
+            <h2>Alligator Gar</h2>
+            <img src="{{ url_for('static', filename='images/alligator_gar.jpg') }}" alt="Alligator Gar">
+            <p class="fish-price">$50</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Alligator Gar">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="monster-fish-item">
+            <h2>Oscar</h2>
+            <img src="{{ url_for('static', filename='images/oscar.jpg') }}" alt="Oscar">
+            <p class="fish-price">$30</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Oscar">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="monster-fish-item">
+            <h2>Arowana</h2>
+            <img src="{{ url_for('static', filename='images/arowana.jpg') }}" alt="Arowana">
+            <p class="fish-price">$80</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Arowana">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="monster-fish-item">
+            <h2>Piranha</h2>
+            <img src="{{ url_for('static', filename='images/piranha.jpg') }}" alt="Piranha">
+            <p class="fish-price">$20</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Piranha">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>

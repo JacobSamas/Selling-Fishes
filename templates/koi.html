@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Koi - Aquarium Fish Store</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <h1>Koi</h1>
+    <ul class="koi-list">
+        <li class="koi-item">
+            <h2>Japanese Koi</h2>
+            <img src="{{ url_for('static', filename='images/japanese_koi.jpg') }}" alt="Japanese Koi">
+            <p>Price: $20.99</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Japanese Koi">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="koi-item">
+            <h2>Butterfly Koi</h2>
+            <img src="{{ url_for('static', filename='images/butterfly_koi.jpg') }}" alt="Butterfly Koi">
+            <p>Price: $25.99</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Butterfly Koi">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="koi-item">
+            <h2>Regular Koi</h2>
+            <img src="{{ url_for('static', filename='images/regular_koi.jpg') }}" alt="Regular Koi">
+            <p>Price: $18.99</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Regular Koi">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>

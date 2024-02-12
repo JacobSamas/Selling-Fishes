@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Aquarium Fish Store</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+    <h1>Welcome to the Aquarium Fish Store</h1>
+
+    <nav>
+        <ul class="fish-list">
+            <li class="fish">
+                <a href="/guppies">Guppies</a>
+                <img src="{{ url_for('static', filename='images/guppies.jpg') }}" alt="Guppies">
+            </li>
+            <li class="fish">
+
+                <a href="/koi">Koi</a>
+                <img src="{{ url_for('static', filename='images/koi.jpg') }}" alt="Koi">
+            </li>
+            <li class="fish">
+                <a href="/monster_fishes">Monster Fishes</a>
+                <img src="{{ url_for('static', filename='images/monster_fishes.jpg') }}" alt="Monster Fishes">
+            </li>
+        </ul>
+    </nav>
+
+
+    <a href="/cart">View Cart</a>
+</body>
+
+</html>

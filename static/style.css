@@ -1,0 +1,211 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e0f4f7; /* Light blue background, reminiscent of water */
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #0275d8; /* Deep blue color for headings */
+}
+
+/* Navigation Menu */
+nav ul.fish-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul.fish-list li.fish {
+    margin: 10px;
+    text-align: center;
+}
+
+nav ul.fish-list li.fish a {
+    display: block;
+    margin-bottom: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #0275d8; /* Deep blue color for links */
+}
+
+nav ul.fish-list li.fish img {
+    width: 150px; /* Adjust as needed */
+    height: 100px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+nav ul.fish-list li.fish img:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    nav ul.fish-list {
+        flex-direction: column;
+    }
+
+    nav ul.fish-list li.fish {
+        width: 100%;
+    }
+}
+
+.guppy-item {
+    /* existing styles... */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.guppy-item img {
+    max-width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.guppy-item p {
+    color: #0275d8;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #0275d8; /* Deep blue color for the main heading */
+}
+
+/* Koi list styling */
+.koi-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.koi-item {
+    padding: 10px;
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.koi-item img {
+    max-width: 100px; /* Maximum width for images */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space below the image */
+}
+
+.koi-item p {
+    color: #0275d8; /* Deep blue color for price */
+    font-size: 1.1em;
+    font-weight: bold; /* Bold font for price */
+}
+
+/* Style for 'Add to Cart' button */
+.add-to-cart {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.add-to-cart:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Link to home */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #0275d8;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #0275d8; /* Deep blue color for the main heading */
+}
+
+/* Monster Fish list styling */
+.monster-fish-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.monster-fish-item {
+    padding: 10px;
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.monster-fish-item img {
+    max-width: 100px; /* Maximum width for images */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space below the image */
+}
+
+.fish-price {
+    color: #0275d8; /* Deep blue color for price */
+    font-size: 1.1em;
+    font-weight: bold; /* Bold font for price */
+}
+
+/* Style for 'Add to Cart' button */
+.add-to-cart-button {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.add-to-cart-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Link to home */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #0275d8;
+    text-decoration: none;
+    font-size: 1.1em;
+}

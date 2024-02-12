@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guppies - Aquarium Fish Store</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <h1>Guppies</h1>
+    <ul class="guppy-list">
+        <li class="guppy-item">
+            <h2>Albino Red Guppy</h2>
+            <img src="{{ url_for('static', filename='images/albino_red_guppy.jpg') }}" alt="Albino Red Guppy">
+            <p>Price: $5.99</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Albino Red Guppy">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="guppy-item">
+            <h2>Albino White Guppy</h2>
+            <img src="{{ url_for('static', filename='images/albino_white_guppy.jpg') }}" alt="Albino White Guppy">
+            <p>Price: $6.49</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Albino White Guppy">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="guppy-item">
+            <h2>Purple Berry Guppy</h2>
+            <img src="{{ url_for('static', filename='images/purple_berry_guppy.jpg') }}" alt="Purple Berry Guppy">
+            <p>Price: $7.99</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Purple Berry Guppy">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="guppy-item">
+            <h2>Gold Guppy</h2>
+            <img src="{{ url_for('static', filename='images/gold_guppy.jpg') }}" alt="Gold Guppy">
+            <p>Price: $8.99</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Gold Guppy">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+        <li class="guppy-item">
+            <h2>Koi Guppy</h2>
+            <img src="{{ url_for('static', filename='images/koi_guppy.jpg') }}" alt="Koi Guppy">
+            <p>Price: $9.49</p>
+            <form action="{{ url_for('add_to_cart') }}" method="post">
+                <input type="hidden" name="fish_id" value="Koi Guppy">
+                <input class="add-to-cart" type="submit" value="Add to Cart">
+            </form>
+        </li>
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>
