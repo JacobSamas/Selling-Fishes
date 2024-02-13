@@ -1,14 +1,42 @@
 from flask import Flask, render_template, session, redirect, url_for, request
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 app = Flask(__name__)
 
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+# Set a strong, secret key for session management
+app.secret_key = 'your_secret_key'
 
-app.secret_key = 'your_secret_key'  # Set a strong, secret key for session management
+# Configuration for SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Initialize SQLAlchemy with your Flask app
+db = SQLAlchemy(app)
+
+# Initialize Flask-Migrate with your Flask app and SQLAlchemy database
+migrate = Migrate(app, db)
+
+# Define the Product model
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    description = db.Column(db.String(200))
+    image_filename = db.Column(db.String(200))  # Add this line for the image filename
+
+    def __repr__(self):
+        return f'<Product {self.name}>'
+
+
+# Create the database tables
+with app.app_context():
+    db.create_all()
+
+# Add your routes here
 @app.route('/')
 def home():
-    return render_template('index.html')
+    products = Product.query.all()
+    return render_template('index.html', products=products)
 
 @app.route('/guppies')
 def guppies():
@@ -37,4 +65,4 @@ def cart():
     return render_template('cart.html', cart=session.get('cart', []))
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5002)
+    app.run(debug=True, port=5002)
