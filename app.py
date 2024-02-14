@@ -1,54 +1,72 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
 app = Flask(__name__)
-
-# Set a strong, secret key for session management
 app.secret_key = 'your_secret_key'
-
-# Configuration for SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize SQLAlchemy with your Flask app
 db = SQLAlchemy(app)
-
-# Initialize Flask-Migrate with your Flask app and SQLAlchemy database
 migrate = Migrate(app, db)
 
-# Define the Product model
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    products = db.relationship('Product', backref='category', lazy=True)
+
+    def __repr__(self):
+        return f'<Category {self.name}>'
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(200))
-    image_filename = db.Column(db.String(200))  # Add this line for the image filename
+    image_filename = db.Column(db.String(200))
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
 
     def __repr__(self):
         return f'<Product {self.name}>'
 
+@app.cli.command('initdb')
+def initdb_command():
+    """Initializes the database."""
+    add_initial_data()
+    print('Initialized the database.')
 
-# Create the database tables
-with app.app_context():
-    db.create_all()
+def add_initial_data():
+    with app.app_context():
+        # Create categories if they don't exist
+        guppies = Category.query.filter_by(name='Guppies').first()
+        if not guppies:
+            guppies = Category(name='Guppies')
+            db.session.add(guppies)
 
-# Add your routes here
+        koi = Category.query.filter_by(name='Koi').first()
+        if not koi:
+            koi = Category(name='Koi')
+            db.session.add(koi)
+
+        monster_fishes = Category.query.filter_by(name='Monster Fishes').first()
+        if not monster_fishes:
+            monster_fishes = Category(name='Monster Fishes')
+            db.session.add(monster_fishes)
+
+        # Add products
+        # ... rest of the code ...
+
 @app.route('/')
 def home():
-    products = Product.query.all()
-    return render_template('index.html', products=products)
+    categories = Category.query.all()
+    return render_template('index.html', categories=categories)
 
-@app.route('/guppies')
-def guppies():
-    return render_template('guppies.html')
-
-@app.route('/koi')
-def koi():
-    return render_template('koi.html')
-
-@app.route('/monster_fishes')
-def monster_fishes():
-    return render_template('monster_fishes.html')
+@app.route('/category/<category_name>')
+def show_category(category_name):
+    category = Category.query.filter_by(name=category_name).first()
+    if not category:
+        return redirect(url_for('home'))
+    return render_template('category.html', category=category)
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -65,4 +83,5 @@ def cart():
     return render_template('cart.html', cart=session.get('cart', []))
 
 if __name__ == '__main__':
+    add_initial_data()
     app.run(debug=True, port=5002)
