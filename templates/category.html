@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category.name }} - Aquarium Fish Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>{{ category.name }}</h1>
+    <div class="products">
+        {% for product in products %}
+            <div class="product">
+                <h2>{{ product.name }}</h2>
+                <p>Price: ${{ product.price }}</p>
+                <p>{{ product.description }}</p>
+                {% if product.image_filename %}
+                    <img src="/static/images/products/albino_red_guppy.jpg" alt="Albino Red Guppy">
+                    <img src="/static/images/products/albino_white_guppy.jpg" alt="Albino White Guppy">
+                    <img src="/static/images/products/purple_berry_guppy.jpg" alt="Purple Berry Guppy">
+                    <img src="/static/images/products/gold_guppy.jpg" alt="Gold Guppy">
+                    <img src="/static/images/products/japanese_koi.jpg" alt="Japanese Koi">
+                    <img src="/static/images/products/butterfly_koi.jpg" alt="Butterfly Koi">
+                    <img src="/static/images/products/regular_koi.jpg" alt="Regular Koi">
+                    <img src="/static/images/products/alligator_gar.jpg" alt="Alligator Gar">
+                    <img src="/static/images/products/oscar.jpg" alt="Oscar">
+                    <img src="/static/images/products/arowana.jpg" alt="Arowana">
+                    <img src="/static/images/products/piranha.jpg" alt="Piranha">
+
+                {% endif %}
+                <form action="{{ url_for('add_to_cart') }}" method="post">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <input type="number" name="quantity" value="1" min="1">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

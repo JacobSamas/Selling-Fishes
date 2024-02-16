@@ -1,55 +1,22 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Aquarium Fish Store</title>
-    <link rel="stylesheet" href="/static/style.css" />
+    <meta charset="UTF-8">
+    <title>Home - Aquarium Fish Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- If you have a CSS file -->
 </head>
-
 <body>
-    <h1>Welcome to the Aquarium Fish Store</h1>
-
-    <nav>
-        <ul class="fish-list">
-            <li class="fish">
-                <a href="/guppies">Guppies</a>
-                <img src="{{ url_for('static', filename='images/guppies.jpg') }}" alt="Guppies">
-            </li>
-            <li class="fish">
-
-                <a href="/koi">Koi</a>
-                <img src="{{ url_for('static', filename='images/koi.jpg') }}" alt="Koi">
-            </li>
-            <li class="fish">
-                <a href="/monster_fishes">Monster Fishes</a>
-                <img src="{{ url_for('static', filename='images/monster_fishes.jpg') }}" alt="Monster Fishes">
-            </li>
-        </ul>
-    </nav>
-
-    {% for product in products %}
-        <h2>{{ product.name }}</h2>
-        <p>{{ product.description }}</p>
-        <p>Price: {{ product.price }}</p>
-    {% endfor %}
-
-    {% for category in categories %}
-        <h2>{{ category.name }}</h2>
-        <ul>
-            {% for product in category.products %}
-                <li>
-                    <h3>{{ product.name }}</h3>
-                    <p>{{ product.description }}</p>
-                    <p>Price: {{ product.price }}</p>
-                    <!-- Display the product image if available -->
-                    {% if product.image_filename %}
-                        <img src="{{ url_for('static', filename='images/' + product.image_filename) }}" alt="{{ product.name }}">
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
+    <h1>Welcome to Our Aquarium Fish Store</h1>
+    <div class="categories">
+        {% for category in categories %}
+            <div class="category">
+                <a href="{{ url_for('show_category', category_name=category.name) }}">
+                    <!-- Ensure you have images stored in 'static/images' directory -->
+                    <img src="{{ url_for('static', filename='images/' + category.image_filename) }}" alt="{{ category.name }}">
+                    <h2>{{ category.name }}</h2>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 </body>
-
 </html>
