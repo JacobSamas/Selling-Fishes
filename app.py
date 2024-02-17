@@ -40,7 +40,6 @@ def initdb_command():
 def add_initial_data():
     with app.app_context():
         db.create_all()  # Create tables if they don't exist
-
         # Categories with their images
         categories_data = [
             ('Guppies', 'guppies.jpg'),
@@ -57,7 +56,7 @@ def add_initial_data():
 
         # ... code to add products ...
         products_data = [
-            ('Albino Red Guppy',5.99, 'A vibrant red guppy.', 'albino_red_guppy.jpg', 'Guppies'),
+            ('Albino Red Guppy', 5.99, 'A vibrant red guppy.', 'albino_red_guppy.jpg', 'Guppies'),
             ('Albino White Guppy', 6.49, 'A pure white, elegant guppy.', 'albino_white_guppy.jpg', 'Guppies'),
             ('Purple Berry Guppy', 7.99, 'A striking purple colored guppy.', 'purple_berry_guppy.jpg', 'Guppies'),
             ('Gold Guppy', 8.99, 'A shiny gold guppy, very eye-catching.', 'gold_guppy.jpg', 'Guppies'),
