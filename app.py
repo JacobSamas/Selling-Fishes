@@ -79,7 +79,21 @@ def add_initial_data():
 @app.route('/')
 def home():
     categories = Category.query.all()
-    return render_template('index.html', categories=categories)
+    
+    # Initialize an empty cart summary
+    cart_summary = {'total_items': 0, 'total_price': 0.0}
+    
+    # Populate the cart summary if there are items in the cart
+    if 'cart' in session:
+        for product_id, quantity in session['cart'].items():
+            product = Product.query.get(product_id)
+            if product:
+                cart_summary['total_items'] += quantity
+                cart_summary['total_price'] += product.price * quantity
+
+    # Pass the cart summary to the template
+    return render_template('index.html', categories=categories, cart_summary=cart_summary)
+
 
 @app.route('/category/<category_name>')
 def show_category(category_name):
@@ -107,7 +121,7 @@ def add_to_cart():
 @app.route('/cart')
 def cart():
     cart_items = []
-    total_price = 0
+    total_price = 0.0  # Ensure this is initialized to a float
 
     if 'cart' in session:
         for product_id, quantity in session['cart'].items():
@@ -117,6 +131,39 @@ def cart():
                 cart_items.append({'product': product, 'quantity': quantity})
 
     return render_template('cart.html', cart_items=cart_items, total_price=total_price)
+
+@app.route('/update_cart', methods=['POST'])
+def update_cart():
+    product_id = request.form.get('product_id')
+    quantity = int(request.form.get('quantity', 1))
+
+    if 'cart' in session and product_id in session['cart']:
+        if quantity > 0:
+            session['cart'][product_id] = quantity
+        else:
+            del session['cart'][product_id]
+
+    session.modified = True
+    return redirect(url_for('cart'))
+
+
+@app.route('/remove_from_cart', methods=['POST'])
+def remove_from_cart():
+    product_id = request.form.get('product_id')
+
+    # Convert product_id to integer
+    try:
+        product_id = int(product_id)
+    except ValueError:
+        # Handle the exception if the product_id is not an integer
+        return redirect(url_for('cart'))
+
+    if 'cart' in session and product_id in session['cart']:
+        if product_id in session['cart']:
+            del session['cart'][product_id]
+            session.modified = True
+
+    return redirect(url_for('cart'))
 
 
 if __name__ == '__main__':

@@ -4,27 +4,30 @@
     <meta charset="UTF-8">
     <title>{{ category.name }} - Aquarium Fish Store</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 <body>
-    <h1>{{ category.name }}</h1>
-    <div class="products">
+    <h1 class="text-4xl font-bold">{{ category.name }}</h1>
+    <div class="grid grid-cols-3 gap-4">
         {% for product in products %}
-            <div class="product">
-                <h2>{{ product.name }}</h2>
-                <p>Price: ${{ product.price }}</p>
-                <p>{{ product.description }}</p>
+            <div class="bg-white rounded-lg shadow-md p-4">
+                <h2 class="text-xl font-bold">{{ product.name }}</h2>
+                <p class="text-gray-600">Price: ${{ product.price }}</p>
+                <p class="text-gray-800">{{ product.description }}</p>
                 {% if product.image_filename %}
                     <!-- Dynamically set the image source based on the product's image filename -->
-                    <img src="{{ url_for('static', filename='images/products/' + product.image_filename) }}" alt="{{ product.name }}">
+                    <img src="{{ url_for('static', filename='images/products/' + product.image_filename) }}" alt="{{ product.name }}" class="mt-4">
                 {% endif %}
-                <form action="{{ url_for('add_to_cart') }}" method="post">
+                <form action="{{ url_for('add_to_cart') }}" method="post" class="mt-4">
+                    <div class="flex items-center">
+                        <input type="number" name="quantity" value="1" min="1" class="mr-2 w-16 py-2 px-3 border border-gray-300 rounded">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add to Cart</button>
+                    </div>
                     <input type="hidden" name="product_id" value="{{ product.id }}">
-                    <input type="number" name="quantity" value="1" min="1">
-                    <button type="submit">Add to Cart</button>
                 </form>
             </div>
         {% endfor %}
     </div>
-    <a href="{{ url_for('home') }}">Back to Home</a>
+    <a href="{{ url_for('home') }}" class="mt-4">Back to Home</a>
 </body>
 </html>

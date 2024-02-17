@@ -4,16 +4,47 @@
     <meta charset="UTF-8">
     <title>Home - Aquarium Fish Store</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> <!-- If you have a CSS file -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        /* Add custom styles here */
+        .category-card {
+            background-color: #F7FAFC;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
-<body>
-    <h1>Welcome to Our Aquarium Fish Store</h1>
-    <div class="categories">
+<body class="bg-gray-100">
+    <h1 class="text-4xl text-center mt-8">Welcome to Our Aquarium Fish Store</h1>
+    <div class="flex justify-center mt-8">
+        <a href="{{ url_for('cart') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Cart</a>
+    </div>
+    <div class="grid grid-cols-3 gap-4 mt-8">
         {% for category in categories %}
-            <div class="category">
+            <div class="category-card">
                 <a href="{{ url_for('show_category', category_name=category.name) }}">
                     <!-- Ensure you have images stored in 'static/images' directory -->
-                    <img src="{{ url_for('static', filename='images/' + category.image_filename) }}" alt="{{ category.name }}">
-                    <h2>{{ category.name }}</h2>
+                    <img src="{{ url_for('static', filename='images/' + category.image_filename) }}" alt="{{ category.name }}" class="category-image">
+                    <h2 class="category-name">{{ category.name }}</h2>
                 </a>
             </div>
         {% endfor %}
