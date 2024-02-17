@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1 class="text-4xl font-bold mb-4">Search Results</h1>
+    <ul>
+        {% for product in results %}
+        <li class="mb-2">{{ product.name }} - ${{ product.price }}</li>
+        {% else %}
+        <p class="text-red-500">No results found.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>

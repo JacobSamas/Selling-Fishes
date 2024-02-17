@@ -71,8 +71,11 @@ def add_initial_data():
         ]
         for name, price, description, image_filename, category_name in products_data:
             category = Category.query.filter_by(name=category_name).first()
-            product = Product(name=name, price=price, description=description, image_filename=image_filename, category=category)
-            db.session.add(product)
+            if category:
+                product = Product.query.filter_by(name=name, category=category).first()
+                if not product:
+                    product = Product(name=name, price=price, description=description, image_filename=image_filename, category=category)
+                    db.session.add(product)
 
         db.session.commit()
 
@@ -97,10 +100,22 @@ def home():
 
 @app.route('/category/<category_name>')
 def show_category(category_name):
+    sort = request.args.get('sort', 'recommended')
+
     category = Category.query.filter_by(name=category_name).first_or_404()
-    products = Product.query.filter_by(category_id=category.id).all()
+    
+    if sort == 'price_asc':
+        products = Product.query.filter_by(category_id=category.id).order_by(Product.price.asc()).all()
+    elif sort == 'price_desc':
+        products = Product.query.filter_by(category_id=category.id).order_by(Product.price.desc()).all()
+    elif sort == 'alphabetical':
+        products = Product.query.filter_by(category_id=category.id).order_by(Product.name).all()
+    else:  # recommended or default case
+        products = Product.query.filter_by(category_id=category.id).all()
+
     return render_template('category.html', category=category, products=products)
 
+    
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
     product_id = request.form.get('product_id')
@@ -150,20 +165,27 @@ def update_cart():
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     product_id = request.form.get('product_id')
-
-    # Convert product_id to integer
     try:
         product_id = int(product_id)
     except ValueError:
-        # Handle the exception if the product_id is not an integer
+        # Handle the error if conversion fails
         return redirect(url_for('cart'))
 
     if 'cart' in session and product_id in session['cart']:
-        if product_id in session['cart']:
-            del session['cart'][product_id]
-            session.modified = True
+        del session['cart'][product_id]
+        session.modified = True
 
     return redirect(url_for('cart'))
+
+
+    
+
+@app.route('/search_results')
+def search_results():
+    query = request.args.get('query')
+    # Example search logic: find products matching the query
+    results = Product.query.filter(Product.name.ilike(f'%{query}%')).all()
+    return render_template('search_results.html', results=results)
 
 
 if __name__ == '__main__':
