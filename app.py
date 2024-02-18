@@ -1,26 +1,42 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from extensions import db, login_manager
+from auth import auth_blueprint
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+db.init_app(app)
+login_manager.init_app(app)
+
+#login_manager = LoginManager()
+#login_manager.login_view = 'auth.login'
+#login_manager.init_app(app)
+from models import User, Category, Product
+# from auth import auth_blueprint
+
+#app.register_blueprint(auth_blueprint)
 
 class Category(db.Model):
+    __tablename__ = 'category'
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     image_filename = db.Column(db.String(200), nullable=True)
     products = db.relationship('Product', backref='category', lazy=True)
-    
 
     def __repr__(self):
         return f'<Category {self.name}>'
 
+
 class Product(db.Model):
+    __tablename__ = 'product'
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     price = db.Column(db.Float, nullable=False)
@@ -30,6 +46,7 @@ class Product(db.Model):
 
     def __repr__(self):
         return f'<Product {self.name}>'
+
 
 @app.cli.command('initdb')
 def initdb_command():
@@ -164,21 +181,31 @@ def update_cart():
 
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
+    # Adding more detailed logging for debugging
+    print("Current session cart before removal:", session.get('cart'))
+
     product_id = request.form.get('product_id')
+    print("Product ID to remove:", product_id)
+
+    if not product_id:
+        print("No product ID provided")
+        return redirect(url_for('cart'))
+
     try:
         product_id = int(product_id)
     except ValueError:
-        # Handle the error if conversion fails
+        print(f"Invalid product ID: {product_id}")
         return redirect(url_for('cart'))
 
-    if 'cart' in session and product_id in session['cart']:
+    if product_id in session.get('cart', {}):
         del session['cart'][product_id]
         session.modified = True
+        print("Product removed, updated session cart:", session.get('cart'))
+    else:
+        print(f"Product ID {product_id} not in cart")
 
     return redirect(url_for('cart'))
 
-
-    
 
 @app.route('/search_results')
 def search_results():
@@ -188,6 +215,18 @@ def search_results():
     return render_template('search_results.html', results=results)
 
 
+# User Loader for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.query.get(int(user_id))
+
+# Import and register the blueprint
+from auth import auth as auth_blueprint
+app.register_blueprint(auth_blueprint)
+
+
 if __name__ == '__main__':
     add_initial_data()
+    db.create_all()
     app.run(debug=True, port=5002)
