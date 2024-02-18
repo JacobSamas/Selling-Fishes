@@ -2,25 +2,16 @@ from flask import Flask, render_template, session, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from extensions import db, login_manager
-from auth import auth_blueprint
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-app.register_blueprint(auth_blueprint, url_prefix='/auth')
+app.secret_key = 'your_secret_key'
 
 db.init_app(app)
 login_manager.init_app(app)
+login_manager.login_view = 'auth.login'
 
-#login_manager = LoginManager()
-#login_manager.login_view = 'auth.login'
-#login_manager.init_app(app)
-from models import User, Category, Product
-# from auth import auth_blueprint
-
-#app.register_blueprint(auth_blueprint)
 
 class Category(db.Model):
     __tablename__ = 'category'
@@ -221,12 +212,13 @@ def load_user(user_id):
     from models import User
     return User.query.get(int(user_id))
 
-# Import and register the blueprint
-from auth import auth as auth_blueprint
-app.register_blueprint(auth_blueprint)
-
-
 if __name__ == '__main__':
-    add_initial_data()
-    db.create_all()
+    from models import User, Category, Product
+    from auth import auth_blueprint
+
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    with app.app_context():
+        db.create_all()
+    
     app.run(debug=True, port=5002)
