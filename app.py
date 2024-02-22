@@ -2,6 +2,7 @@ from flask import Flask, render_template, session, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from extensions import db, login_manager
+import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
@@ -11,32 +12,6 @@ app.secret_key = 'your_secret_key'
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
-
-
-# class Category(db.Model):
-#     __tablename__ = 'category'
-#     __table_args__ = {'extend_existing': True}
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(80), unique=True, nullable=False)
-#     image_filename = db.Column(db.String(200), nullable=True)
-#     products = db.relationship('Product', backref='category', lazy=True)
-
-#     def __repr__(self):
-#         return f'<Category {self.name}>'
-
-
-# class Product(db.Model):
-#     __tablename__ = 'product'
-#     __table_args__ = {'extend_existing': True}
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(80), nullable=False)
-#     price = db.Column(db.Float, nullable=False)
-#     description = db.Column(db.String(200))
-#     image_filename = db.Column(db.String(200))
-#     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-
-#     def __repr__(self):
-#         return f'<Product {self.name}>'
 
 
 @app.cli.command('initdb')
@@ -173,27 +148,21 @@ def update_cart():
 @app.route('/remove_from_cart', methods=['POST'])
 def remove_from_cart():
     # Adding more detailed logging for debugging
-    print("Current session cart before removal:", session.get('cart'))
+    print("Current session cart before removal:", session.get('cart'),  flush=True)
 
     product_id = request.form.get('product_id')
-    print("Product ID to remove:", product_id)
+    print("Product ID to remove:", product_id, file=sys.stdout)
 
     if not product_id:
-        print("No product ID provided")
+        print("No product ID provided", file=sys.stdout)
         return redirect(url_for('cart'))
 
-    try:
-        product_id = int(product_id)
-    except ValueError:
-        print(f"Invalid product ID: {product_id}")
-        return redirect(url_for('cart'))
-
-    if product_id in session.get('cart', {}):
+    if product_id in session['cart']:
         del session['cart'][product_id]
         session.modified = True
-        print("Product removed, updated session cart:", session.get('cart'))
+        print("Product removed, updated session cart:", session.get('cart'), file=sys.stdout)
     else:
-        print(f"Product ID {product_id} not in cart")
+        print(f"Product ID {product_id} not in cart", file=sys.stdout)
 
     return redirect(url_for('cart'))
 
