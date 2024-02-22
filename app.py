@@ -13,30 +13,30 @@ login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 
 
-class Category(db.Model):
-    __tablename__ = 'category'
-    __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    image_filename = db.Column(db.String(200), nullable=True)
-    products = db.relationship('Product', backref='category', lazy=True)
+# class Category(db.Model):
+#     __tablename__ = 'category'
+#     __table_args__ = {'extend_existing': True}
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(80), unique=True, nullable=False)
+#     image_filename = db.Column(db.String(200), nullable=True)
+#     products = db.relationship('Product', backref='category', lazy=True)
 
-    def __repr__(self):
-        return f'<Category {self.name}>'
+#     def __repr__(self):
+#         return f'<Category {self.name}>'
 
 
-class Product(db.Model):
-    __tablename__ = 'product'
-    __table_args__ = {'extend_existing': True}
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    description = db.Column(db.String(200))
-    image_filename = db.Column(db.String(200))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+# class Product(db.Model):
+#     __tablename__ = 'product'
+#     __table_args__ = {'extend_existing': True}
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(80), nullable=False)
+#     price = db.Column(db.Float, nullable=False)
+#     description = db.Column(db.String(200))
+#     image_filename = db.Column(db.String(200))
+#     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
 
-    def __repr__(self):
-        return f'<Product {self.name}>'
+#     def __repr__(self):
+#         return f'<Product {self.name}>'
 
 
 @app.cli.command('initdb')
@@ -215,6 +215,8 @@ def load_user(user_id):
 if __name__ == '__main__':
     from models import User, Category, Product
     from auth import auth_blueprint
+
+    # initdb_command()
 
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
