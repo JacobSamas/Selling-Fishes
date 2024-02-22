@@ -183,11 +183,11 @@ def load_user(user_id):
 
 if __name__ == '__main__':
     from models import User, Category, Product
-    from auth import auth_blueprint
+    from auth import auth
 
     # initdb_command()
 
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+    app.register_blueprint(auth, url_prefix='/auth')
 
     with app.app_context():
         db.create_all()
