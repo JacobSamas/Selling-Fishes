@@ -1,0 +1,31 @@
+<header class="bg-white shadow">
+    <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <!-- Logo and Home Link -->
+        <a href="{{ url_for('home') }}" class="flex items-center">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="h-8 mr-3">
+            <span class="font-semibold text-xl text-gray-800">Aquarium Fish Store</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex items-center">
+            <a href="{{ url_for('about') }}" class="text-gray-800 text-sm mr-4 hover:text-gray-600">About</a>
+            <a href="{{ url_for('contact') }}" class="text-gray-800 text-sm mr-4 hover:text-gray-600">Contact</a>
+            <a href="{{ url_for('cart') }}" class="text-gray-800 text-sm hover:text-gray-600">Cart</a>
+            <!-- Login Link -->
+            <a href="{{ url_for('auth.login') }}" class="text-gray-800 text-sm ml-4 hover:text-gray-600">Login</a>
+        </div>
+
+        <!-- Search Form -->
+        <form action="{{ url_for('search_results') }}" method="get" class="flex">
+            <input type="text" name="query" placeholder="Search..." class="rounded-l border border-gray-300 p-2 focus:outline-none focus:border-gray-500">
+            <button type="submit" class="bg-blue-500 text-white rounded-r p-2 hover:bg-blue-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10a4 4 0 11-2 3.464A4 4 0 018 10zm0 0l6 6"></path></svg>
+            </button>
+        </form>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden flex items-center">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </nav>
+</header>
