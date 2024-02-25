@@ -174,6 +174,14 @@ def search_results():
     results = Product.query.filter(Product.name.ilike(f'%{query}%')).all()
     return render_template('search_results.html', results=results)
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 
 # User Loader for Flask-Login
 @login_manager.user_loader
