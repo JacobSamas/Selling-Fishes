@@ -5,10 +5,17 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
+    {% include 'includes/header.html' %}
     <h1 class="text-4xl font-bold mb-4">Search Results</h1>
     <ul>
         {% for product in results %}
-        <li class="mb-2">{{ product.name }} - ${{ product.price }}</li>
+        <li class="mb-4">
+            <img src="{{ url_for('static', filename='images/products/' + product.image_filename) }}" alt="{{ product.name }}" class="h-32 w-32 object-cover">
+            <div class="mt-2">
+                <span class="block text-lg font-semibold">{{ product.name }}</span>
+                <span class="block text-sm text-gray-600">${{ product.price }}</span>
+            </div>
+        </li>
         {% else %}
         <p class="text-red-500">No results found.</p>
         {% endfor %}
