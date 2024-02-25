@@ -182,6 +182,21 @@ def about():
 def contact():
     return render_template('contact.html')
 
+@app.route('/orders')
+def orders():
+    # Logic to retrieve and display user's orders
+    return render_template('orders.html')
+
+@app.route('/wishlist')
+def wishlist():
+    # Logic to retrieve and display user's wishlist
+    return render_template('wishlist.html')
+
+@app.route('/account')
+def account():
+    # Logic to display user account details
+    return render_template('account.html')
+
 
 # User Loader for Flask-Login
 @login_manager.user_loader
