@@ -3,15 +3,59 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from extensions import db, login_manager
 import sys
+import stripe
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'your_secret_key'
 
+app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_Iw2zeAtqt97CP34Jc7CqSqz0'
+app.config['STRIPE_SECRET_KEY'] = 'sk_test_51BlBUqBSuAxxto58qiONA0mkNxS9687zzKKUbJzVqgNib38hDBsFQYZW6ZE9cbTCLJ4Y09IuW69xKvE8sn2EJB0S00MJpLWTl4'
+
+
+
 db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
+
+
+
+@app.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    stripe.api_key = app.config['STRIPE_SECRET_KEY']
+
+    total_price = 0
+    if 'cart' in session:
+        for product_id, quantity in session['cart'].items():
+            product = Product.query.get(product_id)
+            if product:
+                total_price += product.price * quantity
+    
+    calculated_total_amount_in_cents = int(total_price * 100)
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {
+                        'name': 'Total Cart Amount',
+                    },
+                    'unit_amount': calculated_total_amount_in_cents,
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=url_for('success', _external=True),
+            cancel_url=url_for('cart', _external=True),
+        )
+        return redirect(checkout_session.url, code=303)
+    except Exception as e:
+        return str(e), 500
+
+
 
 
 @app.cli.command('initdb')
@@ -196,6 +240,11 @@ def wishlist():
 def account():
     # Logic to display user account details
     return render_template('account.html')
+
+@app.route('/success')
+def success():
+    # Handle post-payment logic here
+    return render_template('success.html')  # Ensure you have a success.html template
 
 
 # User Loader for Flask-Login
