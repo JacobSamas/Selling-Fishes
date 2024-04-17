@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'your_secret_key'
 
 app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_Iw2zeAtqt97CP34Jc7CqSqz0'
-app.config['STRIPE_SECRET_KEY'] = 'sk_test_51BlBUqBSuAxxto58qiONA0mkNxS9687zzKKUbJzVqgNib38hDBsFQYZW6ZE9cbTCLJ4Y09IuW69xKvE8sn2EJB0S00MJpLWTl4'
+app.config['STRIPE_SECRET_KEY'] = os.getenv('STRIPE_SECRET_KEY')
 
 
 
