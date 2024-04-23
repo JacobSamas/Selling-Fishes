@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from extensions import db, login_manager
 import sys
 import stripe
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
